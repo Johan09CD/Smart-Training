@@ -419,25 +419,230 @@
 
 ---
 
-# SECCION RESERVADA PARA REGLAS DE NEGOCIO
+# REGLAS DE NEGOCIO
 
 ## Usuario
-Pendiente
 
-## Membresia
-Pendiente
+RN-001
+Los roles válidos del sistema son:
+- Usuario
+- Instructor
+- Administrador
+- Gerente
+
+RN-002
+El estado de un usuario puede ser:
+- Activo
+- Suspendido
+- Moroso
+
+RN-003
+Los cambios de estado son realizados manualmente por un Administrador.
+
+RN-004
+Los usuarios con membresía vencida pasan automáticamente a estado Moroso.
+
+RN-005
+Solo un Administrador puede desbloquear usuarios bloqueados o suspendidos.
+
+RN-006
+Solo el Administrador puede visualizar fotos corporales.
+
+RN-007
+Solo el Administrador puede modificar medidas físicas registradas.
+
+RN-008
+Los instructores tienen acceso gratuito al gimnasio.
+
+---
+
+## Membresía
+
+RN-009
+Los planes permitidos son:
+- Diario
+- Semanal
+- Quincenal
+- Mensual
+- Trimestral
+
+RN-010
+Todos los planes tienen acceso a los mismos servicios.
+
+RN-011
+No existen planes premium.
+
+RN-012
+No existen restricciones horarias por tipo de plan.
+
+RN-013
+Una membresía vence exactamente en la fecha calculada desde la compra.
+
+RN-014
+Un usuario moroso no puede ingresar al gimnasio.
+
+RN-015
+No existe período de gracia para membresías vencidas.
+
+RN-016
+La congelación de membresías solo aplica por enfermedad grave u hospitalización.
+
+RN-017
+La congelación debe solicitarse antes del vencimiento de la membresía.
+
+RN-018
+La fecha de vencimiento debe extenderse automáticamente por los días congelados.
+
+RN-019
+Un cambio de plan genera cobro únicamente por la diferencia económica pendiente.
+
+---
 
 ## Pago
-Pendiente
+
+RN-020
+Los métodos de pago válidos son:
+- Efectivo
+- Transferencia
+- Nequi
+- Daviplata
+
+RN-021
+Se permiten pagos parciales o abonos.
+
+RN-022
+El sistema debe impedir pagos duplicados.
+
+RN-023
+Los pagos pueden ser editados por Administradores.
+
+RN-024
+El registro de pagos genera automáticamente el ingreso correspondiente.
+
+RN-025
+El sistema admite promociones y descuentos.
+
+RN-026
+El plan Alcaldía tiene tarifa especial de 40.000 COP.
+
+RN-027
+El plan Tortas de Power tiene tarifa especial de 45.000 COP.
+
+---
 
 ## Rutina
-Pendiente
+
+RN-028
+Las rutinas son aprobadas por el Instructor.
+
+RN-029
+Un usuario puede tener múltiples rutinas activas.
+
+RN-030
+Debe mantenerse historial de versiones de rutinas.
+
+RN-031
+Las rutinas suelen actualizarse cada tres meses, aunque pueden ajustarse semanal o mensualmente.
+
+RN-032
+Un usuario puede tener múltiples objetivos simultáneamente.
+
+RN-033
+Los objetivos válidos incluyen:
+- Fuerza
+- Volumen
+- Pérdida de peso
+- Resistencia
+
+---
 
 ## Entrenamiento
-Pendiente
+
+RN-034
+Los entrenamientos ya realizados pueden ser modificados.
+
+RN-035
+Los usuarios no pueden eliminar ejercicios registrados.
+
+RN-036
+El progreso físico se mide mediante:
+- Peso
+- Porcentaje de grasa
+- Porcentaje de músculo
+
+RN-037
+La asistencia se registra manualmente.
+
+RN-038
+Los usuarios pueden programar descansos.
+
+RN-039
+No existe el concepto de falta dentro del negocio.
+
+---
+
+## Máquinas
+
+RN-040
+Los estados válidos de una máquina son:
+- Disponible
+- Mantenimiento
+- Fuera de servicio
+
+RN-041
+Solo el Administrador puede cambiar el estado de una máquina.
+
+RN-042
+Las máquinas no pueden reservarse.
+
+RN-043
+Solo el Administrador puede subir videos tutoriales.
+
+---
 
 ## Finanzas
-Pendiente
+
+RN-044
+Las categorías principales de gastos son:
+- Empleados
+- Mantenimiento
+- Servicios
+
+RN-045
+Los gastos registrados no pueden modificarse.
+
+RN-046
+Solo el Administrador puede eliminar gastos.
+
+RN-047
+El gimnasio realiza cierres diarios de caja.
+
+RN-048
+El gimnasio maneja caja menor.
+
+RN-049
+No se registran devoluciones.
+
+---
 
 ## Notificaciones
-Pendiente
+
+RN-050
+El sistema enviará recordatorios automáticos.
+
+RN-051
+Los recordatorios de vencimiento se enviarán tres días antes.
+
+RN-052
+Los eventos que generan notificaciones son:
+- Vencimiento de membresía
+- Pago registrado
+- Cambio de rutina
+- Inasistencia
+
+RN-053
+Deben auditarse:
+- Estados financieros
+- Usuarios vencidos
+- Usuarios registrados por mes
+- Progreso físico de usuarios
