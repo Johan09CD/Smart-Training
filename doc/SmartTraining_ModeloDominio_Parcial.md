@@ -105,6 +105,7 @@
 ## Plan
 ### Atributos
 - tipo: TipoPlan
+- tarifaEspecial: TarifaEspecial
 - precio: Double
 - duracionDias: Int
 
@@ -295,9 +296,13 @@
 ## TipoPlan
 - DIARIO
 - SEMANAL
+- QUINCENAL
 - MENSUAL
+- TRIMESTRAL
+
+## TarifaEspecial
 - ALCALDIA
-- FAMILIAR
+- TORTAS_POWER
 
 ## EstadoMembresia
 - ACTIVA
