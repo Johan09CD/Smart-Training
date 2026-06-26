@@ -1,0 +1,45 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build packages
+        run: pnpm build --filter=@smart-training/types --filter=@smart-training/validators --filter=@smart-training/constants
+
+      - name: Build API (typecheck)
+        run: pnpm --filter=api build
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test"
+          JWT_SECRET: "test-secret-32-chars-minimum-value"
+          JWT_REFRESH_SECRET: "test-refresh-32-chars-minimum-ok"
+          REDIS_URL: "redis://localhost:6379"
+          NODE_ENV: "test"
+
+      - name: Build Web
+        run: pnpm --filter=web build
+        env:
+          VITE_API_URL: "https://api.smarttraining.app/v1"
