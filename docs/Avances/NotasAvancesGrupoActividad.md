@@ -12,3 +12,28 @@ Node es v22.14.0; el doc pide v20.x.x. El engines lo acepta (>=20.0.0) y no caus
 * DB smart_training_dev creada en tu Postgres local — la inicialicé con CREATE DATABASE smart_training_dev vía psql después de que confirmaste credenciales.
 ### Observación
 El proceso terminó con exit 1 en el reporte de tarea de background, pero es porque maté node.exe manualmente con taskkill. El servidor estaba sano antes del kill.
+## Actividad A0.3 - Hecha sin observasiones todo OK
+## Actividad A0.4 - Pendiente cuentas
+En los siguientes detalles es mencinado lo que falta y lo ya hecho, lo que está pendiente es debido a esperar la confirmación de cual cuenta será usada para los despliegues de la aplicación. Estas cuentas serán del gym para que ellos queden con disposición del software eso en su propiedad.
+### Ya hecho
+* .github/workflows/pr-check.yml — exactamente como el doc.
+* .github/workflows/deploy-staging.yml — exactamente como el doc.
+* apps/web/.gitignore — agregué dev-dist/ para que no se cuele al repo el output de vite-plugin-pwa en modo dev.
+### Lo que falta por hacer
+* Crear rama de prueba con error TS intencional → check Lint & Build falla — te toca a ti.
+* Corregir error → el check pasa — idem.
+* Mergear PR → workflow Deploy Staging se dispara — idem.
+* Backend responde en URL de Railway tras el deploy — depende del deploy real.
+* Frontend carga en URL de Vercel tras el deploy — idem.
+### Variables a configurar
+1. Cuentas externas conectadas al repo: Vercel (proyecto web) y Railway (servicio smart-training-api). Crear si aún no existen.
+2. Secretos en GitHub (Settings → Secrets and variables → Actions):
+    * VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+    * RAILWAY_TOKEN
+    * DATABASE_URL (Postgres de Railway)
+    * JWT_SECRET, JWT_REFRESH_SECRET (generar con openssl rand -base64 32)
+    * REDIS_URL (Upstash)
+1. Branch protection en main: requerir el check Lint & Build, bloquear bypass, requerir branch al día.
+4. Variables de entorno en Railway → mismas que apps/api/.env.example con valores reales.
+5. Variables en Vercel → VITE_API_URL con la URL pública de Railway + /v1.
+6. PR de humo: rama → commit con const x: string = 123; en cualquier archivo TS → PR → verificar que Lint & Build falla → corregir → verificar que pasa → merge → ver Deploy Staging correr.
