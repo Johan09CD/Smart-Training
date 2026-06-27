@@ -7,4 +7,225 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Los modelos se agregan en G1 (A1.1)
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum Rol {
+  CLIENTE
+  INSTRUCTOR
+  GERENTE
+}
+
+enum EstadoUsuario {
+  ACTIVO
+  SUSPENDIDO
+  MOROSO
+}
+
+enum TipoPlan {
+  DIARIO
+  SEMANAL
+  QUINCENAL
+  MENSUAL
+  TRIMESTRAL
+}
+
+enum TarifaEspecial {
+  ALCALDIA
+  TORTAS_POWER
+}
+
+enum EstadoMembresia {
+  ACTIVA
+  INACTIVA
+  CONGELADA
+}
+
+enum ConceptoPago {
+  MENSUALIDAD
+  INSCRIPCION
+  RENOVACION
+  PLAN_PERSONALIZADO
+  PROMOCION
+  MULTA
+  PRODUCTO
+  OTRO
+}
+
+enum MetodoPago {
+  EFECTIVO
+  TRANSFERENCIA
+  TARJETA_CREDITO
+  TARJETA_DEBITO
+  NEQUI
+  DAVIPLATA
+  PAYPAL
+  OTRO
+}
+
+enum EstadoPago {
+  PENDIENTE
+  PAGADO
+  VENCIDO
+  CANCELADO
+  REEMBOLSADO
+}
+
+enum ObjetivoPerfil {
+  GANAR_MASA_MUSCULAR
+  PERDER_GRASA
+  MEJORAR_CONDICION_FISICA
+  AUMENTAR_FUERZA
+  TONIFICAR
+  RECOMPOSICION_CORPORAL
+  MEJORAR_MOVILIDAD
+  REHABILITACION
+  OTRO
+}
+
+enum NivelFitness {
+  PRINCIPIANTE
+  INTERMEDIO
+  AVANZADO
+  ATLETA
+}
+
+enum Genero {
+  MASCULINO
+  FEMENINO
+  OTRO
+}
+
+enum GrupoMuscular {
+  PECHO
+  ESPALDA
+  HOMBROS
+  BICEPS
+  TRICEPS
+  ANTEBRAZO
+  CUADRICEPS
+  FEMORALES
+  GLUTEOS
+  PANTORRILLAS
+  ABDOMEN
+  CORE
+  CARDIO
+  CUERPO_COMPLETO
+  MOVILIDAD
+}
+
+enum DiaSemana {
+  LUNES
+  MARTES
+  MIERCOLES
+  JUEVES
+  VIERNES
+  SABADO
+  DOMINGO
+}
+
+enum TipoNotificacion {
+  RECORDATORIO_ENTRENAMIENTO
+  NUEVA_RUTINA
+  MEMBRESIA_PROXIMA_VENCER
+  PAGO_VENCIDO
+}
+
+enum CanalNotificacion {
+  PUSH
+  EMAIL
+  SMS
+  INAPP
+}
+
+enum EstadoNotificacion {
+  PENDIENTE
+  ENVIADA
+  LEIDA
+  ERROR
+  CANCELADA
+}
+
+enum CategoriaIngreso {
+  MEMBRESIAS
+  INSCRIPCIONES
+  PLANES_PERSONALIZADOS
+  PRODUCTOS
+  PROMOCIONES
+  OTROS
+}
+
+enum CategoriaEgreso {
+  ARRIENDO
+  SERVICIOS
+  SALARIOS
+  MANTENIMIENTO
+  INSUMOS
+  MARKETING
+  EQUIPAMIENTO
+  IMPUESTOS
+  OTROS
+}
+
+enum EstadoMaquina {
+  DISPONIBLE
+  MANTENIMIENTO
+  FUERA_DE_SERVICIO
+}
+
+enum ObjetivoEntrenamiento {
+  FUERZA
+  VOLUMEN
+  PERDIDA_PESO
+  RESISTENCIA
+  OTRO
+}
+
+// ─── MODELOS G1 ───────────────────────────────────────────────────────────────
+
+model Usuario {
+  id              String        @id @default(uuid())
+  nombre          String
+  apellido        String
+  correo          String        @unique
+  telefono        String
+  fechaNacimiento String?
+  fotoPerfil      String?
+  passwordHash    String
+  totpSecret      String?       // solo GERENTE con 2FA activo
+  rol             Rol           @default(CLIENTE)
+  estado          EstadoUsuario @default(ACTIVO)
+  activo          Boolean       @default(true)
+  fechaRegistro   DateTime      @default(now())
+  ultimoAcceso    DateTime?
+
+  sesiones        Sesion[]
+  recuperaciones  RecuperacionPassword[]
+
+  @@map("usuarios")
+}
+
+model Sesion {
+  id              String   @id @default(uuid())
+  usuarioId       String
+  tokenHash       String   @unique  // refresh token hasheado con bcrypt
+  fechaInicio     DateTime @default(now())
+  fechaExpiracion DateTime
+  dispositivo     String?
+  activa          Boolean  @default(true)
+
+  usuario         Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("sesiones")
+}
+
+model RecuperacionPassword {
+  id         String   @id @default(uuid())
+  usuarioId  String
+  tokenHash  String   @unique  // token hasheado con bcrypt
+  expiracion DateTime
+  utilizado  Boolean  @default(false)
+
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("recuperacion_passwords")
+}
